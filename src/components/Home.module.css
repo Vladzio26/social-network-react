@@ -1,0 +1,9 @@
+.home{
+    text-align: center;
+}
+
+.home img {
+    margin: 10px 5px 3px 20px;
+    width:1000px;
+    height: 200px;
+  }

@@ -25,7 +25,7 @@ if(!props.profile){
     
           <img src={props.profile.photos.large != null ? props.profile.photos.large: userPhoto} />
           <ul className={s.profile}>
-            <ProfileStatus updateStatus={props.updateStatus} status={props.status}/>
+            <li><span className={s.spanStatus}>Status:</span><ProfileStatus className={s.status} updateStatus={props.updateStatus} status={props.status}/></li>
             <li><span>Full name: </span>{props.profile.fullName}</li>
             <li><span>About me: </span>{props.profile.aboutMe}</li>
             <li><span>Instagram: </span>{props.profile.contacts.instagram}</li>

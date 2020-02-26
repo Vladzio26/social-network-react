@@ -1,6 +1,6 @@
 import { profileAPI } from "../api/api";
 
-let UPDATE_NEW_TEXT_POST = "UPDATE_NEW_TEXT_POST";
+
 let ADD_POST_MAKER = "ADD_POST_MAKER";
 let SET_USERS_PROFILE = "SET_USERS_PROFILE"
 let TOGGLE_IS_FATCHING= "TOGGLE_IS_FATCHING";
@@ -19,9 +19,8 @@ export let initialState =  {
         {message:'What a miss(', like: 156},
         {message:'Great chance', like: 333}
       ],
-    newPostText: 'it-kamasutra',
     isFatching: true,
-    status:""
+    status:"Yoo"
 
 }
 
@@ -32,7 +31,7 @@ const profileReducer = ( state = initialState, action) => {
     switch(action.type) {
         case ADD_POST_MAKER: {
         let postMessage = {
-            message: state.newPostText,
+            message: action.newPostText,
             like: 0
           };
           let stateCopy = {...state};
@@ -42,12 +41,7 @@ const profileReducer = ( state = initialState, action) => {
           stateCopy.newPostText = " ";
           return stateCopy;
         }
-        case UPDATE_NEW_TEXT_POST:{
-        let stateCopy = {...state};
-        stateCopy.dataPost = [...state.dataPost];
-        stateCopy.newPostText = action.newText;
-          return stateCopy;
-        }
+     
         case SET_USERS_PROFILE:{
           return {...state, profile: action.profile}
         }
@@ -65,9 +59,16 @@ const profileReducer = ( state = initialState, action) => {
 }
 
 
-export const addPostAC = () =>({type:ADD_POST_MAKER})
-export const updateNewTextPostAC = (text) =>({type:UPDATE_NEW_TEXT_POST, newText: text})
+export const addPostAC = (newPostText) =>({type:ADD_POST_MAKER, newPostText})
 export const setUsersProfile = (profile) =>({type:SET_USERS_PROFILE, profile})
+
+export const getUserProfile = (userId) =>(dispatch) => {
+    
+  profileAPI.getProfile(userId)
+  .then(response =>{  
+      dispatch(setUsersProfile(response.data));   
+  });
+}
 export const toggleIsFatchingAC = (isFatching) =>({type:TOGGLE_IS_FATCHING, isFatching})
 export const setStatus = (status) =>({type:SET_STATUS, status})
 
@@ -77,7 +78,7 @@ export const setStatus = (status) =>({type:SET_STATUS, status})
 export const getStatus = (userId) => (dispatch) =>{
   profileAPI.getStatus(userId)
     .then(response =>{
-      debugger
+   
       dispatch(setStatus(response.data));
     });
 }

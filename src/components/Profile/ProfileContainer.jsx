@@ -7,36 +7,47 @@ import Profile from "./Profile";
 import {connect} from "react-redux"
 import redux from "redux";
 import {Redirect} from 'react-router-dom';  
+import { withRouter } from 'react-router-dom';
+
+import {  addPostAC,getStatus,updateStatus } from '../../redux/profile-reducer';
+import { AuthRedirect } from '../../hoc/AuthRedirect';
 
 
+class ProfileContainer extends React.Component{
+  render(){
+    return(
+      <Profile {...this.props}
+      profile={this.props.profile}
+      status={this.props.status}
+      updateStatus={this.props.updateStatus}
+      />
+    )
+  }
 
-import { updateNewTextPostAC, addPostAC } from '../../redux/profile-reducer';
-
+}
   
 const mapStateToProps = (state) => {
 
   return{
+    status:state.profilePage.status,
+    
     isAuthoris: state.auth.isAuthoris,
     persData: state.profilePage.persData,
     dataPost: state.profilePage.dataPost,
-    newPostText: state.profilePage.newPostText
+    newPostText: state.profilePage.newPostText,
+    profile: state.profilePage.profile
   }
 }
 
 const mapDispatchToProps = (dispatch) => {
   
   return{
-    
-    updateNewPost: (text) => {
-      let action = updateNewTextPostAC(text);
-      dispatch(action);
-    },
-    addPost: ()=>{
-      dispatch(addPostAC());
+    addPost: (newPostText)=>{
+      dispatch(addPostAC(newPostText));
     }
   }
 }
 
 
 
-export default  connect(mapStateToProps, mapDispatchToProps)(Profile);
+export default connect(mapStateToProps,mapDispatchToProps /*{addPostAC,getStatus,updateStatus, updateNewTextPostAC}*/)(ProfileContainer);

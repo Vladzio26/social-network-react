@@ -5,41 +5,44 @@ import userPhoto from "./../../assets/user.png";
 import preloader from './../../assets/820.png'; 
 import { NavLink } from 'react-router-dom';
 import Header from "../Header/Header";
-import {getUser} from "../../api/api";
+import {userAPI} from "../../api/api";
+import Preloader from "../common/Preloader";
+
 
 class Users extends React.Component{
-    
      
+     /*
     componentDidMount() {
-       /* this.props.getUsersThunkCreator();  */
+       /* this.props.getUsersThunkCreator();  
         this.props.toggleIsFatching(true);
-        getUser(this.props.currentPage, this.props.pageSize)
-        .then(response =>{
+        userAPI.getUser(this.props.currentPage, this.props.pageSize)
+        .then(data =>{
             this.props.toggleIsFatching(false);
-            this.props.setUsers(response.data.items);
-             this.props.setTotalUsersCount(response.data.totalCount);   
+            this.props.setUsers(data.items);
+             this.props.setTotalUsersCount(data.totalCount);   
              
         });
 
     }
+    */
 
 
-    onPageChange =(pageNumber) => {
+    /*onPageChange =(pageNumber) => {
        
         this.props.toggleIsFatching(true);
         this.props.setCurrentPage (pageNumber);
-         getUser(pageNumber, this.props.pageSize)
-        .then(response=>{
+        userAPI.getUser(pageNumber, this.props.pageSize)
+        .then(data=>{
             this.props.toggleIsFatching(false);
-            this.props.setUsers(response.data.items);
+            this.props.setUsers(data.items);
             
         })
 
-    }
+    }*/
 
     render () {
         
-        let pageCount = Math.ceil (this.props.totalUsersCount / this.props.pageSize)/6;
+        let pageCount = Math.ceil (this.props.totalUsersCount / this.props.pageSize)/8;
 
         let pages = [];
         for(let i =1; i<=pageCount; i++){
@@ -50,7 +53,7 @@ class Users extends React.Component{
 
 
         return <div>
-      
+            
             {this.props.isFatching ? 
             <div >
              <img src={preloader} />
@@ -62,7 +65,7 @@ class Users extends React.Component{
             <p></p>
             {pages.map(p => {
                 return <span className={this.props.currentPage === p && s.selectedPage || s.page}
-                onClick ={(e) => {this.onPageChange(p); }}>{p}</span>
+                onClick ={(e) => {this.props.onPageChange(p); }}>{p}</span>
             })}
             <p></p>
         </div>
@@ -85,23 +88,30 @@ class Users extends React.Component{
 
 
 
-            <button onClick = {()=>{  
+            <button disabled={this.props.followingInProgress} onClick = {()=>{  
+                this.props.toggleFollowingProgress(true, u.id);
                 axios.delete (`https://social-network.samuraijs.com/api/1.0/follow/${u.id}` ,{withCredentials:true, headers:{"API-KEY": "2d76971f-6f6e-4bb5-959d-005a0b0acbb7"}})
                 .then(response =>{
                 if(response.data.resultCode == 0){
                     this.props.unfollow(u.id);
                 }
+                this.props.toggleFollowingProgress(false, u.id);
+
                 });}}>Unfollow</button>:
 
 
 
-                <button onClick = {()=>{ 
-                
+                <button disabled={this.props.followingInProgress} onClick = {()=>{ 
+                    
+                    this.props.toggleFollowingProgress(true, u.id);
+
                     axios.post (`https://social-network.samuraijs.com/api/1.0/follow/${u.id}`,{},{withCredentials:true, headers:{"API-KEY": "2d76971f-6f6e-4bb5-959d-005a0b0acbb7"}})
                     .then(response =>{
                         if(response.data.resultCode == 0){
                             this.props.follow(u.id);
                         }
+                        this.props.toggleFollowingProgress(false, u.id);
+
                         });
                           
                           

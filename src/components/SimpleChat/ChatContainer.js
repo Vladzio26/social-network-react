@@ -1,21 +1,11 @@
 import React from 'react';
-
 import { connect } from 'react-redux';
-
 import Chat from './Chat';
 import Title from './Title'
-import {Redirect} from 'react-router-dom';  
-
-
+//import { AuthRedirect } from '../../hoc/AuthRedirect';
 
 class ChatContainer extends React.Component {
-   
-  
-  
-  
   render(){
-
-
     return(
       <div>
       <Title/>
@@ -24,10 +14,8 @@ class ChatContainer extends React.Component {
     );
   }
 }
-let AuthRedirectComponent = (props) =>{
-  if (!this.props.isAuthoris) return <Redirect to= '/login' />
-  return <ChatContainer {...props} />
-}
+
+//let AuthRedirectComponent = AuthRedirect(Chat);
 
 const mapStateToProps = (state) =>({
   

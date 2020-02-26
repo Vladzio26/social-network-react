@@ -3,33 +3,33 @@ import s from './Personality.module.css';
 import Personality from "./Personality";
 import {connect} from 'react-redux';
 import axios from "axios";
-import {updateStatus, getStatus ,setUsersProfile, toggleIsFatchingAC} from "./../../../redux/profile-reducer";
+import {getUserProfile, updateStatus, getStatus, toggleIsFatchingAC} from "./../../../redux/profile-reducer";
 import { withRouter } from 'react-router-dom';
 import {Redirect} from 'react-router-dom';  
-import { profileAPI } from "../../../api/api";
+import { profileAPI, userAPI } from "../../../api/api";
+
+
 class PersonalityContainer extends React.Component {
   
   componentDidMount () {
-    //this.props.toggleIsFatching(true);
+    debugger
 let userId = this.props.match.params.userId;
 
 if(!userId){
-  userId = 1710;
-}
-    axios.get (`https://social-network.samuraijs.com/api/1.0/profile/`+ userId)
-    .then(response =>{  
-        this.props.setUsersProfile(response.data);
-      //  this.props.toggleIsFatching();
-       
-      //this.props.setStatus(userId);
+  
+  userId = this.props.authrizedUserId;
 
-     
-      
-    });
+  if(!userId){
+    this.props.history.push("/login");
+  }
+
+}
+    this.props.getUserProfile(userId);
+    this.props.getStatus(userId);
+    
  
   }
   render(){
-    if (this.props.isAuthoris == false) return <Redirect to ={"/login"} />
     return(
       <Personality updateStatus={this.props.updateStatus} status={this.props.status} {... this.props} profile= {this.props.profile}/>
       )
@@ -46,8 +46,9 @@ return <PersonalityContainer {...props} />
  let mapStateToProps = (state) =>({
       profile: state.profilePage.profile,
       isFatching: state.usersPage.isFatching,
-      status:state.profilePage.status
+      status:state.profilePage.status,
+      authrizedUserId: state.auth.userId
  })
 
  let UrlDataComponent = withRouter(AuthRedirectComponent);
-export default connect(mapStateToProps,{getStatus,updateStatus, setUsersProfile, toggleIsFatchingAC})(UrlDataComponent)
+export default connect(mapStateToProps,{getStatus,updateStatus, getUserProfile, toggleIsFatchingAC})(UrlDataComponent)

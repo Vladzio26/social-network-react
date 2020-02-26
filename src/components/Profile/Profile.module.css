@@ -24,5 +24,14 @@
   }
   .post_maker h2 input button{
     grid-area: b;
+    width:50px;
+    height: 50px;
+    margin-left: -300px;
   }
- 
+ .button{
+   position: relative;
+   left:-250px;
+   height: 66px;
+   border-top-right-radius: 20px;
+  border-bottom-right-radius: 20px;
+  }

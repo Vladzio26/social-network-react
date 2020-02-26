@@ -2,17 +2,10 @@ import React, { Component } from 'react';
 import {storage, database, firebase} from "../SimpleChat/Firebase";
 import Firebase from '../SimpleChat/Firebase';
 import s from "./Photo.module.css";
-
 import ReactMediumImg from 'react-medium-zoom'
-
-
-
-
-
 class Photo extends Component {
   
   constructor (props) {
-
     super(props);
     this.state = {
       images: [],
@@ -28,25 +21,15 @@ class Photo extends Component {
     this.handleUpload = this.handleUpload.bind(this);
     this.getImgUrl = this.getImgUrl.bind(this);
   }
-
-
- 
-
-
 handleChange = e =>{
   if(e.target.files[0]){
     const image = e.target.files[0];
     this.setState(()=>({image}));
   }
 }
-
-
-
-
 handleUpload =() =>{
   const {image} = this.state;
   const uploadTask= storage.ref(`images/${image.name}`).put(image);
- 
   uploadTask.on('state_changed', 
   (snapshot)=>{
     //progress...
@@ -63,23 +46,12 @@ handleUpload =() =>{
         imageUrl:url
       })
       this.setState({url});
-      
     })
-   
-
   });
- 
 }
-
-
-
-
   componentDidMount (){
     this.getImgUrl();  
-  
   }
-
-
     getImgUrl =() =>{
       let imageUrl = Firebase
       .database()
@@ -90,44 +62,28 @@ handleUpload =() =>{
         snapshot.forEach(child =>{
           var image = child.val()
           newUrlImage.push({id: child.key, imageUrl:image.imageUrl})
-         
         })
-    
         this.setState({images:newUrlImage})
-       
-      })
-    
+      })   
 }
-    
 renderImages = () =>{
-
   console.log(this.state.images)
   return this.state.images.map((image)=>(
-
-  
           <ReactMediumImg className={s.myImg} id={s.myImgId} src={image.imageUrl}   />
-  
           ))
  }
-
   render() {
-
     return (
       <div className={s.app}>
         <progress value = {this.state.progress} max = "100%" className={s.progress}></progress>
         {this.state.progress}
         <br />
         <div id="file" onChange={this.handleChange}  className={s.wrapperForInput}>
-        
         <label for="file" className={s.label}>Upload image</label>
-        
         <input   className={s.inputFile} type="file" onChange={this.handleChange}/>
-        
         </div>
         <button className={s.buttonUpload} onClick={this.handleUpload}>Upload</button>
         <hr/>  
-
-        
         <br/>
         <div className={s.wrapperPreview}>
         <h3 className={s.header}>Uploaded image</h3>
@@ -139,12 +95,9 @@ renderImages = () =>{
         <div id={s.myModal} className={s.modal}>
         <span className={s.close}>&times;</span>
          <img className={s.modal_content} id={s.img01} /> 
-       
         </div>
-       
         </div>
     );
   }
 }
- 
 export default Photo;

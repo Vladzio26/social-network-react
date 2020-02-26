@@ -20,9 +20,7 @@ div .demo0 {
 }
 .content {
   --aug-border: 5px;
-  
-    --aug-border-bg: rgb(72, 214, 16);
-   
+  --aug-border-bg: rgb(72, 214, 16);
   grid-area: c;
   opacity: .9;
 }

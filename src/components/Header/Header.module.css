@@ -88,3 +88,30 @@
     filter: hue-rotate(360deg);
   }
 }
+
+.logout{
+  background-color: gold;
+  border:none;
+  height: 20px;
+  border:1px solid lightsteelblue;
+}
+.logout:hover{
+  animation-duration: 1s;
+  border:2px solid blue;
+  cursor: pointer;
+}
+
+.logouut{
+  width:100px;
+  height:100px;
+  position: relative;
+  top:-100px;
+  left:-50px;
+
+}
+
+.currentUser{
+  width:200px;
+  height:200px;
+  background-color: red;
+}

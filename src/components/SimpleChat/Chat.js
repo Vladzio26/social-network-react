@@ -20,11 +20,59 @@ class Chat extends React.Component {
             text:"",
             messages: [],
             login:[this.props.login],
-            users:[]
-
+            users:{},
+            currentUser:''
             }
     }
 
+
+
+    componentDidMount(){
+        this.authListener();
+
+        console.log(this.state.currentUser)
+        
+    }
+
+    componentWillMount(){
+        
+        var user = Firebase.auth().currentUser;
+
+        if (user) {
+        // User is signed in.
+        var currentUser = Firebase.auth().currentUser;
+        console.log(currentUser)
+        this.setState({currentUser:user.email})
+        this.setState({displayName:user.displayName})
+      
+    }
+      
+    }
+
+
+
+    authListener(){
+        Firebase.auth().onAuthStateChanged((user)=>{
+           
+            if(user){
+                this.setState({user});
+
+               
+                localStorage.getItem('user', user.uid);
+                console.log(user)
+                this.setState({currentUser:user.email});
+                this.setState({displayName: user.displayName});
+                this.setState({photoURL: user.photoURL})
+            }else{
+                
+                this.setState({user: null });
+                localStorage.removeItem('user');
+            };
+
+         
+        });
+
+    }
 
     componentDidMount(){
      /*   var config = {
@@ -49,17 +97,17 @@ onSubmit =  event =>{
 }
 
 
-writeMessageToDB = (message, login) =>{
+ writeMessageToDB = (message, user) =>{
+    debugger
     Firebase
     .database()
     .ref("messages/")
     .push({
         text:message,
-        user:login
+        //user:currentUser
     })
 }
- getMessages = () =>{
- 
+  getMessages = () =>{
     let messagesDB = Firebase
     .database()
     .ref("messages/")
@@ -70,26 +118,29 @@ writeMessageToDB = (message, login) =>{
         snapshot.forEach(child =>{
             var message=child.val()
             var login=child.val()
-            newMessages.push({id: child.key, text:message.text, user:login.user })
+            newMessages.push({id: child.key, text:message.text, user:this.state.displayName })
            // newUser.push({id: child.key, user:login.user })
            console.log(newMessages)
         })
         this.setState({messages: newMessages, })
        // this.setState({users: newUser, })
-        this.bottomSpan.scrollIntoView({ behavior:"smooth"})
     })
 }
 
 renderMessages = () =>{
+   
  return this.state.messages.map((message)=>(
+    
      <ListItem>
          <div className={s.borderMessage}>
          
-  <div className={s.user}>{message.user}</div><div className={s.message}>{message.text}</div>
+ <div className={s.user}>{message.user}</div><div className={s.message}>{message.text}</div>
        </div>
     </ListItem>
+    
  ))
 }
+/*
 renderUser = () =>{
     return this.state.users.map((user)=>(
         
@@ -97,7 +148,7 @@ renderUser = () =>{
       
     ))
    }
-
+*/
 
    addEmoji = (e) => {
     //console.log(e.native)
@@ -119,7 +170,7 @@ render(){
               
                 <List>
                 <ListItem>
-                <ListItemText><h3>{this.renderUser()}</h3><div>{this.renderMessages()}</div></ListItemText> 
+                <ListItemText><div>{this.renderMessages()}</div></ListItemText> 
                     </ListItem>
                 </List>
                 
@@ -137,6 +188,14 @@ render(){
             <div className={s.emoji}>
             <Picker onSelect={this.addEmoji} />
             </div>
+            {  console.log(this.state.messages)
+        }{  
+    console.log(this.state.login)
+    
+        }{  
+            console.log(this.state.users)
+        }{  
+            console.log(this.state.currentUser)}
             </div>
         )
     }

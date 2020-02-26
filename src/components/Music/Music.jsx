@@ -87,14 +87,11 @@ renderAudio = () =>{
     <div className={s.audioFile}>
       <h3>{audio.audioName}</h3>
       <AudioPlayer
-    
-    src={audio.audioUrl}
-    onPlay={e => console.log("onPlay")}
-    // other props here
-  />
-  </div>
-    
-          ))
+        src={audio.audioUrl}
+        onPlay={e => console.log("onPlay")}
+      />
+    </div>
+       ))
  }
 
 

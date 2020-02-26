@@ -40,7 +40,11 @@ input[type="file"] {
     
     
 }
+select{
+  margin-left: 100px;
+}
 .label{
+    
     font-family: 'Poppins', sans-serif;
     width: 100px;
     height: 100px;
