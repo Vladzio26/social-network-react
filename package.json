@@ -6,7 +6,7 @@
     "@material-ui/core": "^4.5.0",
     "aug-attr-spliced": "^0.2.0",
     "augmented-ui": "^1.1.0",
-    "chart.js": "^2.9.3",
+    "chart.js": "^2.9.4",
     "connect-flash": "^0.1.1",
     "ejs": "^2.7.1",
     "emoji-mart": "^2.11.1",
